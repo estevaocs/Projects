@@ -4,7 +4,7 @@ import Model.Enums.Estado;
 import Model.Enums.Prioridade;
 import Params.Parametros;
 
-import java.util.Date;
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 public class Demanda {
@@ -15,15 +15,15 @@ public class Demanda {
     private Estado estado;
     private String destino;
     private Prioridade prioridade;
-    private Date dataAlteracao;
-    private Date dataFinal;
-    private Date dataCriacao;
-    private Date dataEntradaNoEstado;
+    private Calendar dataAlteracao = Calendar.getInstance();
+    private Calendar dataFinal = Calendar.getInstance();
+    private Calendar dataCriacao = Calendar.getInstance();
+    private Calendar dataEntradaNoEstado = Calendar.getInstance();
     private String responsavel;
     private Parametros dateFomr = new Parametros();
 
     public Demanda(int id, String titulo, String empresa, Estado estado, String destino, Prioridade prioridade,
-                   Date dataAlteracao, Date dataCriacao, Date dataEntradaNoEstado, String responsavel) {
+                   Calendar dataAlteracao, Calendar dataCriacao, Calendar dataEntradaNoEstado, String responsavel) {
         this.id = id;
         this.titulo = titulo;
         this.empresa = empresa;
@@ -34,11 +34,12 @@ public class Demanda {
         this.dataCriacao = dataCriacao;
         this.dataEntradaNoEstado = dataEntradaNoEstado;
         this.responsavel = responsavel;
-        this.dataFinal = calculaDataFinal();
+        calculaDataFinal();
     }
 
-    private Date calculaDataFinal() {
-        return new Date(this.dataCriacao.getTime() + TimeUnit.DAYS.toMillis(1));
+    private void calculaDataFinal() {
+        this.dataFinal.setTime(dataCriacao.getTime());
+        this.dataFinal.add(Calendar.DAY_OF_MONTH, +5);
     }
 
     public int getId() {
@@ -89,35 +90,35 @@ public class Demanda {
         this.prioridade = prioridade;
     }
 
-    public Date getDataAlteracao() {
+    public Calendar getDataAlteracao() {
         return dataAlteracao;
     }
 
-    public void setDataAlteração(Date dataAlteracao) {
+    public void setDataAlteração(Calendar dataAlteracao) {
         this.dataAlteracao = dataAlteracao;
     }
 
-    public Date getDataFinal() {
+    public Calendar getDataFinal() {
         return dataFinal;
     }
 
-    public void setDataFinal(Date dataFinal) {
+    public void setDataFinal(Calendar dataFinal) {
         this.dataFinal = dataFinal;
     }
 
-    public Date getDataCriacao() {
+    public Calendar getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(Date dataCriacao) {
+    public void setDataCriacao(Calendar dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
-    public Date getDataEntradaNoEstado() {
+    public Calendar getDataEntradaNoEstado() {
         return dataEntradaNoEstado;
     }
 
-    public void setDataEntradaNoEstado(Date dataEntradaNoEstado) {
+    public void setDataEntradaNoEstado(Calendar dataEntradaNoEstado) {
         this.dataEntradaNoEstado = dataEntradaNoEstado;
     }
 
@@ -138,10 +139,10 @@ public class Demanda {
                 ", Estado: " + estado +
                 ", Destino: " + destino  +
                 ", Prioridade: " + prioridade +
-                ", Data Alteração: " + dateFomr.getDate().format(dataAlteracao) +
-                ", Data Final: " + dateFomr.getDateTime().format(dataFinal) +
-                ", Data de Criacao :" + dateFomr.getDateTime().format(dataCriacao) +
-                ", Data de Entrada no Estado: " + dateFomr.getDateTime().format(dataEntradaNoEstado) +
+                ", Data Alteração: " + dateFomr.getDate().format(dataAlteracao.getTime()) +
+                ", Data Final: " + dateFomr.getDateTime().format(dataFinal.getTime()) +
+                ", Data de Criacao :" + dateFomr.getDateTime().format(dataCriacao.getTime()) +
+                ", Data de Entrada no Estado: " + dateFomr.getDateTime().format(dataEntradaNoEstado.getTime()) +
                 ", Eesponsavel: " + responsavel +
                 '}';
     }

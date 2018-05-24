@@ -6,13 +6,12 @@ import Model.Enums.Prioridade;
 import Params.Parametros;
 import jxl.*;
 import jxl.read.biff.BiffException;
-import jxl.write.DateTime;
 
 
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Date;
+import java.util.Calendar;
 
 public class ReadExcel {
     private static final String EXCEL_FILE_LOCATION = "C:\\Users\\ITSS\\Desktop\\Demandas.xls";
@@ -32,13 +31,10 @@ public class ReadExcel {
             Estado estado = null;
             String destino = null;
             Prioridade prioridade = null;
-            DateCell dateCell = null;
-            Date dataAlteracao = null;
+            Calendar dataAlteracao = Calendar.getInstance();
             String responsavel = null;
-            DateTime dateTime = null;
-            Date dataCriacao = null;
-            DateTime dateTime1 = null;
-            Date dataEntradaNoEstado = null;
+            Calendar dataCriacao = Calendar.getInstance();
+            Calendar dataEntradaNoEstado = Calendar.getInstance();
 
             workbook = Workbook.getWorkbook(new File(EXCEL_FILE_LOCATION));
             Sheet sheet = workbook.getSheet(0);
@@ -67,16 +63,16 @@ public class ReadExcel {
                             prioridade = classificaPrioridade(cell.getContents());
                             break;
                         case 10:
-                            dataAlteracao = dateFormat.getDate().parse(cell.getContents());
+                            dataAlteracao.setTime(dateFormat.getDate().parse(cell.getContents()));
                             break;
                         case 18:
                             responsavel = cell.getContents();
                             break;
                         case 20:
-                            dataCriacao = dateFormat.getDateTime().parse(cell.getContents());
+                            dataCriacao.setTime(dateFormat.getDateTime().parse(cell.getContents())) ;
                             break;
                         case 21:
-                            dataEntradaNoEstado = dateFormat.getDateTime().parse(cell.getContents());
+                            dataEntradaNoEstado.setTime(dateFormat.getDateTime().parse(cell.getContents()));
                             break;
                     }
                 }
