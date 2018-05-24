@@ -14,6 +14,6 @@ public class Feriados {
     }
 
     public void add(Feriado feriado) {
-        feriado.
+        feriados.add(feriado);
     }
 }
