@@ -1,11 +1,11 @@
 package Model;
 
+import Logic.CalculaSLA;
 import Model.Enums.Estado;
 import Model.Enums.Prioridade;
 import Params.Parametros;
 
 import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
 
 public class Demanda {
 
@@ -15,10 +15,10 @@ public class Demanda {
     private Estado estado;
     private String destino;
     private Prioridade prioridade;
-    private Calendar dataAlteracao = Calendar.getInstance();
+    private Calendar dataAlteracao;
     private Calendar dataFinal = Calendar.getInstance();
-    private Calendar dataCriacao = Calendar.getInstance();
-    private Calendar dataEntradaNoEstado = Calendar.getInstance();
+    private Calendar dataCriacao;
+    private Calendar dataEntradaNoEstado;
     private String responsavel;
     private Parametros dateFomr = new Parametros();
 
@@ -34,12 +34,7 @@ public class Demanda {
         this.dataCriacao = dataCriacao;
         this.dataEntradaNoEstado = dataEntradaNoEstado;
         this.responsavel = responsavel;
-        calculaDataFinal();
-    }
-
-    private void calculaDataFinal() {
-        this.dataFinal.setTime(dataCriacao.getTime());
-        this.dataFinal.add(Calendar.DAY_OF_MONTH, +5);
+        this.dataFinal = CalculaSLA.calcular(this);
     }
 
     public int getId() {

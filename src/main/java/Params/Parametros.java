@@ -1,46 +1,68 @@
 package Params;
 
-import java.text.AttributedCharacterIterator;
-import java.util.Date;
+import Model.Enums.Prioridade;
+import Model.SLA;
+
+import javax.swing.plaf.SliderUI;
+import java.text.ParseException;
+import java.util.*;
 import java.text.SimpleDateFormat;
 
 public class Parametros {
 
-    private SimpleDateFormat date;
-    private SimpleDateFormat dateTime;
-    private SimpleDateFormat horario;
-    private String dateFormat = "dd/MM/yyyy";
-    private String dateTimeFormat = "dd/MM/yyyy HH:mm";
-    private String horarioFormat = "HH:mm";
-    private Date horaDeEntrada;
-    private Date horaDeSaida;
-    private Date horarioDeAlmoco;
-    private Date horarioDeRetorno;
-    private Date tempoDeAlmoco;
-    private Date horasUteis;
-
-    public Parametros() {
-        this.date = new SimpleDateFormat(dateFormat);
-        this.dateTime = new SimpleDateFormat(dateTimeFormat);
-        this.horario = new SimpleDateFormat(horarioFormat);
-        this.horaDeEntrada = new Date(0,0,0,8,30);
-        this.horaDeSaida= new Date(0,0,0,18,0);
-        this.horarioDeAlmoco= new Date(0,0,0,12,0);
-        this.horarioDeRetorno = new Date(0,0,0,13,30);
-        atualizar();
+    private static String dateFormat = "dd/MM/yyyy";
+    private static String dateTimeFormat = "dd/MM/yyyy HH:mm";
+    private static String horarioFormat = "HH:mm";
+    private static SimpleDateFormat date = new SimpleDateFormat(dateFormat);
+    private static SimpleDateFormat dateTime = new SimpleDateFormat(dateTimeFormat);
+    private static SimpleDateFormat horario = new SimpleDateFormat(horarioFormat);
+    private static Calendar horaDeEntrada = Calendar.getInstance();
+    private static Calendar horaDeSaida = Calendar.getInstance();
+    private static Calendar horarioDeAlmoco = Calendar.getInstance();
+    private static Calendar horarioDeRetorno = Calendar.getInstance();
+    private static Calendar tempoDeAlmoco = Calendar.getInstance();
+    private static Calendar horasUteis = Calendar.getInstance();
+    private static List<SLA> SLAs = new ArrayList<>();
+    static {
+        try {
+            horaDeEntrada.setTime(horario.parse("8:30"));
+            horaDeSaida.setTime(horario.parse("18:00"));
+            horarioDeAlmoco.setTime(horario.parse("12:00"));
+            horarioDeRetorno.setTime(horario.parse("13:30"));
+            atualizar();
+            instaciaSLA();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
-    private Date calculaHorasUteis() {
-        return new Date((horaDeSaida.getTime() - horaDeEntrada.getTime()) - tempoDeAlmoco.getTime());
+    private static void instaciaSLA(){
+        for (Prioridade prioridade:Prioridade.values()) {
+            SLAs.add(new SLA(prioridade));
+        }
     }
 
-    private Date calculaTempoDeAlmoço() {
-        return new Date(horarioDeRetorno.getTime() - horarioDeAlmoco.getTime());
+    private static void calculaHorasUteis() {
+        long valor = (horaDeSaida.getTimeInMillis() - horaDeEntrada.getTimeInMillis()) - tempoDeAlmoco.getTimeInMillis();
+        Date data;
+        Calendar tempoUtil = Calendar.getInstance();
+        data =  new Date();
+        data.setTime(valor);
+        tempoUtil.setTime(data);
     }
 
-    private void atualizar(){
-        this.tempoDeAlmoco = calculaTempoDeAlmoço();
-        this.horasUteis = calculaHorasUteis();
+    private static void calculaTempoDeAlmoco() {
+        long valor = horarioDeRetorno.getTimeInMillis() - horarioDeAlmoco.getTimeInMillis();
+        Date data;
+        Calendar tempoAlmoco = Calendar.getInstance();
+        data =  new Date();
+        data.setTime(valor);
+        tempoAlmoco.setTime(data);
+    }
+
+    private static void atualizar(){
+        calculaTempoDeAlmoco();
+        calculaHorasUteis();
     }
 
     public SimpleDateFormat getDate() {
@@ -74,56 +96,55 @@ public class Parametros {
         this.horario = new SimpleDateFormat(horarioFormat);
     }
 
-
-    public void setHoraDeEntrada(Date horaDeEntrada) {
-        this.horaDeEntrada = horaDeEntrada;
+    public static void setHoraDeEntrada(Calendar horaDeEntrada) {
+        Parametros.horaDeEntrada = horaDeEntrada;
         atualizar();
     }
 
-    public void setHoraDeSaida(Date horaDeSaida) {
-        this.horaDeSaida = horaDeSaida;
+    public static void setHoraDeSaida(Calendar horaDeSaida) {
+        Parametros.horaDeSaida = horaDeSaida;
         atualizar();
     }
 
-    public void setHorarioDeAlmoco(Date horarioDeAlmoco) {
-        this.horarioDeAlmoco = horarioDeAlmoco;
+    public static void setHorarioDeAlmoco(Calendar horarioDeAlmoco) {
+        Parametros.horarioDeAlmoco = horarioDeAlmoco;
         atualizar();
     }
 
-    public void setHorarioDeRetorno(Date horarioDeRetorno) {
-        this.horarioDeRetorno = horarioDeRetorno;
+    public static void setHorarioDeRetorno(Calendar horarioDeRetorno) {
+        Parametros.horarioDeRetorno = horarioDeRetorno;
         atualizar();
     }
 
-    public SimpleDateFormat getHorario() {
-        return horario;
-    }
-
-    public String getHorarioFormat() {
+    public static String getHorarioFormat() {
         return horarioFormat;
     }
 
-    public Date getHoraDeEntrada() {
+    public static SimpleDateFormat getHorario() {
+        return horario;
+    }
+
+    public static Calendar getHoraDeEntrada() {
         return horaDeEntrada;
     }
 
-    public Date getHoraDeSaida() {
+    public static Calendar getHoraDeSaida() {
         return horaDeSaida;
     }
 
-    public Date getHorarioDeAlmoco() {
+    public static Calendar getHorarioDeAlmoco() {
         return horarioDeAlmoco;
     }
 
-    public Date getHorarioDeRetorno() {
+    public static Calendar getHorarioDeRetorno() {
         return horarioDeRetorno;
     }
 
-    public Date getTempoDeAlmoco() {
+    public static Calendar getTempoDeAlmoco() {
         return tempoDeAlmoco;
     }
 
-    public Date getHorasUteis() {
+    public static Calendar getHorasUteis() {
         return horasUteis;
     }
 }
