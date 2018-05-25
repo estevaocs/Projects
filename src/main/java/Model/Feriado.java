@@ -1,14 +1,15 @@
 package Model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Feriado {
 
     private int id;
-    private Date data;
+    private Calendar data;
     private String nome;
 
-    public Feriado(int id, Date data, String nome) {
+    public Feriado(int id, Calendar data, String nome) {
         this.id = id;
         this.data = data;
         this.nome = nome;
@@ -22,11 +23,11 @@ public class Feriado {
         this.id = id;
     }
 
-    public Date getData() {
+    public Calendar getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(Calendar data) {
         this.data = data;
     }
 

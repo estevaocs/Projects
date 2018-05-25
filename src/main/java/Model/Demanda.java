@@ -13,21 +13,23 @@ public class Demanda {
     private String titulo;
     private String empresa;
     private Estado estado;
+    private String status;
     private String destino;
     private Prioridade prioridade;
     private Calendar dataAlteracao;
-    private Calendar dataFinal = Calendar.getInstance();
+    private Calendar dataFinal;
     private Calendar dataCriacao;
     private Calendar dataEntradaNoEstado;
     private String responsavel;
     private Parametros dateFomr = new Parametros();
 
-    public Demanda(int id, String titulo, String empresa, Estado estado, String destino, Prioridade prioridade,
+    public Demanda(int id, String titulo, String empresa, Estado estado, String status, String destino, Prioridade prioridade,
                    Calendar dataAlteracao, Calendar dataCriacao, Calendar dataEntradaNoEstado, String responsavel) {
         this.id = id;
         this.titulo = titulo;
         this.empresa = empresa;
         this.estado = estado;
+        this.status = status;
         this.destino = destino;
         this.prioridade = prioridade;
         this.dataAlteracao = dataAlteracao;
@@ -35,6 +37,14 @@ public class Demanda {
         this.dataEntradaNoEstado = dataEntradaNoEstado;
         this.responsavel = responsavel;
         this.dataFinal = CalculaSLA.calcular(this);
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public int getId() {
@@ -115,6 +125,7 @@ public class Demanda {
 
     public void setDataEntradaNoEstado(Calendar dataEntradaNoEstado) {
         this.dataEntradaNoEstado = dataEntradaNoEstado;
+        this.dataFinal = CalculaSLA.calcular(this);
     }
 
     public String getResponsavel() {
@@ -128,17 +139,18 @@ public class Demanda {
     @Override
     public String toString() {
         return "Demanda{" +
-                "ID: " + id +
-                ", Titulo: " + titulo +
-                ", Empresa: " + empresa +
-                ", Estado: " + estado +
-                ", Destino: " + destino  +
-                ", Prioridade: " + prioridade +
-                ", Data Alteração: " + dateFomr.getDate().format(dataAlteracao.getTime()) +
-                ", Data Final: " + dateFomr.getDateTime().format(dataFinal.getTime()) +
-                ", Data de Criacao :" + dateFomr.getDateTime().format(dataCriacao.getTime()) +
+//                "ID: " + id +
+//                ", Titulo: " + titulo +
+//                ", Empresa: " + empresa +
+//                ", Estado: " + estado +
+//                ", Status: " + status +
+//                ", Destino: " + destino +
+//                ", Prioridade: " + prioridade +
+//                ", Data Alteração: " + dateFomr.getDate().format(dataAlteracao.getTime()) +
                 ", Data de Entrada no Estado: " + dateFomr.getDateTime().format(dataEntradaNoEstado.getTime()) +
-                ", Eesponsavel: " + responsavel +
+                ", Data Final: " + dateFomr.getDateTime().format(dataFinal.getTime()) +
+//                ", Data de Criacao :" + dateFomr.getDateTime().format(dataCriacao.getTime()) +
+//                ", Eesponsavel: " + responsavel +
                 '}';
     }
 }

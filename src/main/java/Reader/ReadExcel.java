@@ -29,6 +29,7 @@ public class ReadExcel {
             String titulo = null;
             String empresa = null;
             Estado estado = null;
+            String status = null;
             String destino = null;
             Prioridade prioridade = null;
             Calendar dataAlteracao = Calendar.getInstance();
@@ -55,6 +56,7 @@ public class ReadExcel {
                             break;
                         case 6:
                             estado = classificaEstado(cell.getContents());
+                            status = cell.getContents();
                             break;
                         case 7:
                             destino = cell.getContents();
@@ -76,7 +78,7 @@ public class ReadExcel {
                             break;
                     }
                 }
-                Demanda demanda = new Demanda(id,titulo,empresa,estado,destino,prioridade,dataAlteracao,dataCriacao,
+                Demanda demanda = new Demanda(id,titulo,empresa,estado,status,destino,prioridade,dataAlteracao,dataCriacao,
                         dataEntradaNoEstado,responsavel);
                 System.out.println(demanda.toString());
             }

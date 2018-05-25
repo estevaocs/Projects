@@ -1,6 +1,7 @@
 package Params;
 
 import Model.Enums.Prioridade;
+import Model.Feriado;
 import Model.SLA;
 
 import javax.swing.plaf.SliderUI;
@@ -23,6 +24,7 @@ public class Parametros {
     private static Calendar tempoDeAlmoco = Calendar.getInstance();
     private static Calendar horasUteis = Calendar.getInstance();
     private static List<SLA> SLAs = new ArrayList<>();
+    private static List<Feriado> feriados = new ArrayList<>();
     static {
         try {
             horaDeEntrada.setTime(horario.parse("8:30"));
@@ -146,5 +148,13 @@ public class Parametros {
 
     public static Calendar getHorasUteis() {
         return horasUteis;
+    }
+
+    public static List<SLA> getSLAs() {
+        return SLAs;
+    }
+
+    public static List<Feriado> getFeriados() {
+        return feriados;
     }
 }
