@@ -1,4 +1,4 @@
-package Reader;
+package br.com.itsstecnologia.reader;
 
 import Model.Demanda;
 import Model.Enums.Estado;
@@ -46,7 +46,7 @@ public class ReadExcel {
                     Cell cell = sheet.getCell(indice, i);
                     switch (indice) {
                         case 1:
-                            id = Integer.parseInt(cell.getContents());
+                                id = Integer.parseInt(cell.getContents());
                             break;
                         case 2:
                             titulo = cell.getContents();
@@ -83,12 +83,14 @@ public class ReadExcel {
                 System.out.println(demanda.toString());
             }
 
-        } catch (IOException e) {
+        } catch (IOException e ) {
             e.printStackTrace();
         } catch (BiffException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
+        } catch (NumberFormatException e) {
+
         } finally {
 
             if (workbook != null) {
@@ -101,17 +103,17 @@ public class ReadExcel {
 
     private static Estado classificaEstado(String valor) {
         switch (valor) {
-            case "Concluido \n":
+            case "Concluido ":
                 return Estado.CONCLUIDO;
-            case "Ag. Avaliação Cliente\n":
+            case "Ag. Avaliação Cliente":
                 return Estado.AG_AVALIACAO;
-            case "Em Atendimento N1\n":
+            case "Em Atendimento N1":
                 return Estado.EM_ATENDIMENTO;
-            case "Em atendimento N2\n":
+            case "Em atendimento N2":
                 return Estado.EM_ATENDIMENTO;
-            case "Ag. Atendimento\n":
+            case "Ag. Atendimento":
                 return Estado.EM_ATENDIMENTO;
-            case "Ag. Informação Cliente\n":
+            case "Ag. Informação Cliente":
                 return Estado.AG_INFORMACAO;
             default:
                 return Estado.OUTROS;
@@ -119,14 +121,15 @@ public class ReadExcel {
     }
 
     private static Prioridade classificaPrioridade(String valor) {
-        switch (valor) {
-            case "1. URGENTE - Ambiente produtivo ou processo parado\n":
+        String array[] = valor.split("\\.");
+        switch (Integer.parseInt(array[0])) {
+            case 1:
                 return Prioridade.URGENTE;
-            case "2. ALTA - Apresenta alto risco para a operação\n":
+            case 2:
                 return Prioridade.ALTA;
-            case "3. MÉDIA - Existe alternativa de contorno\n":
+            case 3:
                 return Prioridade.MEDIA;
-            case "4. BAIXA - Melhoria, interface ou relatório\n":
+            case 4:
                 return Prioridade.BAIXA;
             default:
                 return Prioridade.NC;

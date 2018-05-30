@@ -1,4 +1,4 @@
-package Model.Enums;
+package br.com.itsstecnologia.model.enums;
 
 import java.util.Calendar;
 

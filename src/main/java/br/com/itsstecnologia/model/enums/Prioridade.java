@@ -1,4 +1,4 @@
-package Model.Enums;
+package br.com.itsstecnologia.model.enums;
 
 public enum Prioridade {
 

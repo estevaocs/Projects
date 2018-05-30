@@ -1,30 +1,65 @@
-package Model;
+package br.com.itsstecnologia.model;
 
-import Logic.CalculaSLA;
-import Model.Enums.Estado;
-import Model.Enums.Prioridade;
-import Params.Parametros;
+import br.com.itsstecnologia.logic.CalculaSLA;
+import br.com.itsstecnologia.logic.Config;
+import br.com.itsstecnologia.model.enums.Estado;
+import br.com.itsstecnologia.model.enums.Prioridade;
+import br.com.itsstecnologia.util.BaseEntities;
 
+import javax.persistence.*;
 import java.util.Calendar;
 
-public class Demanda {
+@Entity
+@Table(name = "demandas")
+@AttributeOverride(name = "id", column = @Column(name = "Id"))
+public class Demanda extends BaseEntities<Integer> {
 
+    @Id
     private int id;
+
+    @Column(name = "Titulo", nullable = false, unique = false)
     private String titulo;
+
+    @Column(name = "Empresa", nullable = false, unique = false)
     private String empresa;
+
+    @Column(name = "Estado", nullable = false, unique = false)
     private Estado estado;
+
+    @Column(name = "Status", nullable = false, unique = false)
     private String status;
+
+    @Column(name = "Destino", nullable = false, unique = false)
     private String destino;
+
+    @Column(name = "Prioridade", nullable = false, unique = false)
     private Prioridade prioridade;
+
+    @Column(name = "DataAlteracao", nullable = false, unique = false)
+    @Temporal(TemporalType.DATE)
     private Calendar dataAlteracao;
+
+    @Column(name = "DataFinal", nullable = false, unique = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Calendar dataFinal;
+
+    @Column(name = "DataCriacao", nullable = false, unique = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Calendar dataCriacao;
+
+    @Column(name = "DataEntradaNoEstado", nullable = false, unique = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Calendar dataEntradaNoEstado;
+
+    @Column(name = "Responsavel", nullable = false, unique = false)
     private String responsavel;
-    private Parametros dateFomr = new Parametros();
+
+    public Demanda() {
+    }
 
     public Demanda(int id, String titulo, String empresa, Estado estado, String status, String destino, Prioridade prioridade,
                    Calendar dataAlteracao, Calendar dataCriacao, Calendar dataEntradaNoEstado, String responsavel) {
+        super();
         this.id = id;
         this.titulo = titulo;
         this.empresa = empresa;
@@ -36,6 +71,10 @@ public class Demanda {
         this.dataCriacao = dataCriacao;
         this.dataEntradaNoEstado = dataEntradaNoEstado;
         this.responsavel = responsavel;
+        atualiza();
+    }
+
+    private void atualiza() {
         this.dataFinal = CalculaSLA.calcular(this);
     }
 
@@ -47,7 +86,7 @@ public class Demanda {
         this.status = status;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -93,6 +132,7 @@ public class Demanda {
 
     public void setPrioridade(Prioridade prioridade) {
         this.prioridade = prioridade;
+        this.dataFinal = CalculaSLA.calcular(this);
     }
 
     public Calendar getDataAlteracao() {
@@ -125,7 +165,7 @@ public class Demanda {
 
     public void setDataEntradaNoEstado(Calendar dataEntradaNoEstado) {
         this.dataEntradaNoEstado = dataEntradaNoEstado;
-        this.dataFinal = CalculaSLA.calcular(this);
+        atualiza();
     }
 
     public String getResponsavel() {
@@ -143,12 +183,12 @@ public class Demanda {
 //                ", Titulo: " + titulo +
 //                ", Empresa: " + empresa +
 //                ", Estado: " + estado +
-//                ", Status: " + status +
+                ", Status: " + status +
 //                ", Destino: " + destino +
-//                ", Prioridade: " + prioridade +
+                ", Prioridade: " + prioridade +
 //                ", Data Alteração: " + dateFomr.getDate().format(dataAlteracao.getTime()) +
-                ", Data de Entrada no Estado: " + dateFomr.getDateTime().format(dataEntradaNoEstado.getTime()) +
-                ", Data Final: " + dateFomr.getDateTime().format(dataFinal.getTime()) +
+                ", Data de Entrada no Estado: " + Config.getParametros().getDateTime().format(dataEntradaNoEstado.getTime()) +
+                ", Data Final: " + Config.getParametros().getDateTime().format(dataFinal.getTime()) +
 //                ", Data de Criacao :" + dateFomr.getDateTime().format(dataCriacao.getTime()) +
 //                ", Eesponsavel: " + responsavel +
                 '}';
